@@ -436,6 +436,9 @@ document.addEventListener('DOMContentLoaded', () => {
         transcriptInput.value = transcript;
         diagnoseBtn.disabled = false;
         recordingStatusText.textContent = 'Transcribed! Click Diagnose or edit transcript.';
+      } else {
+        recordingStatusText.textContent = 'Speech was quiet or unclear. Please try speaking again.';
+      }
     } catch (err) {
       console.info('Netlify / Static Demo Mode: Voice captured! Loading sample for instant demonstration...', err);
       recordingStatusText.textContent = '✨ Voice detected! Loading transcript for diagnosis...';
@@ -568,10 +571,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (data.audio_base64) {
       audioPlayer.src = `data:audio/mp3;base64,${data.audio_base64}`;
       playAudioBtn.disabled = false;
-      // Auto-play for high-impact demo experience
       playAudioBtn.click();
     } else {
-      playAudioBtn.disabled = true;
+      // Support Web Speech API fallback for static demo mode
+      playAudioBtn.disabled = false;
     }
 
     // Transfer Problem Retest
@@ -651,16 +654,38 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 7. Bulbul Audio Playback Toggle
+  // 7. Bulbul Audio Playback Toggle (with Web Speech fallback)
   function toggleAudioPlayback() {
-    if (audioPlayer.paused) {
-      audioPlayer.play();
-      playAudioBtn.classList.add('playing');
-      playAudioBtn.querySelector('span').textContent = 'Pause Voice';
-    } else {
-      audioPlayer.pause();
-      playAudioBtn.classList.remove('playing');
-      playAudioBtn.querySelector('span').textContent = 'Listen Repair';
+    if (state.currentAudioB64) {
+      if (audioPlayer.paused) {
+        audioPlayer.play();
+        playAudioBtn.classList.add('playing');
+        playAudioBtn.querySelector('span').textContent = 'Pause Voice';
+      } else {
+        audioPlayer.pause();
+        playAudioBtn.classList.remove('playing');
+        playAudioBtn.querySelector('span').textContent = 'Listen Repair';
+      }
+    } else if (window.speechSynthesis && state.currentDiagnosis && state.currentDiagnosis.spoken_repair) {
+      if (window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel();
+        playAudioBtn.classList.remove('playing');
+        playAudioBtn.querySelector('span').textContent = 'Listen Repair';
+      } else {
+        const utterance = new SpeechSynthesisUtterance(state.currentDiagnosis.spoken_repair);
+        utterance.lang = state.selectedLanguage;
+        utterance.onend = () => {
+          playAudioBtn.classList.remove('playing');
+          playAudioBtn.querySelector('span').textContent = 'Listen Repair';
+        };
+        utterance.onerror = () => {
+          playAudioBtn.classList.remove('playing');
+          playAudioBtn.querySelector('span').textContent = 'Listen Repair';
+        };
+        playAudioBtn.classList.add('playing');
+        playAudioBtn.querySelector('span').textContent = 'Pause Voice';
+        window.speechSynthesis.speak(utterance);
+      }
     }
   }
 
