@@ -709,9 +709,36 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
 
       document.getElementById('btnCheckTransfer').addEventListener('click', async () => {
-        const num = parseInt(document.getElementById('transferNum').value);
-        const den = parseInt(document.getElementById('transferDen').value);
+        const numStr = (document.getElementById('transferNum').value || '').trim();
+        const denStr = (document.getElementById('transferDen').value || '').trim();
         
+        if (!numStr || !denStr) {
+          showTransferFeedback({
+            is_correct: false,
+            message: "⚠️ Please enter both numerator and denominator (e.g., 3 and 4) before checking."
+          });
+          return;
+        }
+
+        const num = parseInt(numStr, 10);
+        const den = parseInt(denStr, 10);
+
+        if (isNaN(num) || isNaN(den)) {
+          showTransferFeedback({
+            is_correct: false,
+            message: "⚠️ Please enter valid integers for both numerator and denominator."
+          });
+          return;
+        }
+
+        if (den === 0) {
+          showTransferFeedback({
+            is_correct: false,
+            message: "⚠️ A fraction's denominator cannot be zero! Please enter a non-zero denominator."
+          });
+          return;
+        }
+
         try {
           const res = await fetch('/api/verify-transfer', {
             method: 'POST',
@@ -729,7 +756,7 @@ document.addEventListener('DOMContentLoaded', () => {
           showTransferFeedback({
             is_correct: isCorrect,
             message: isCorrect
-              ? "Shabash! Excellent! 1/4 + 1/2 = 3/4 is completely correct! You successfully applied common units."
+              ? "🎉 Shabash! Excellent! 1/4 + 1/2 = 3/4 is completely correct! You successfully applied common units."
               : `Not quite. ${num}/${den} is not 3/4 (0.75). Remember: 1/2 is 2/4, so 1/4 + 2/4 = 3/4!`
           });
         }
