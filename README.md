@@ -3,15 +3,16 @@
 # 🎙️ Aawaz (आवाज़)
 ### *Sovereign Spoken Math Misconception Detector for Bharat*
 
-[![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
-[![Sarvam AI](https://img.shields.io/badge/Sarvam%20AI-Saaras%20%7C%20105B%20%7C%20Bulbul-FF6F00.svg)](https://www.sarvam.ai/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.100%2B-009688.svg)](https://fastapi.tiangolo.com/)
-[![Tests](https://img.shields.io/badge/Tests-52%2F52%20Passing-10B981.svg)](./test_aawaz.py)
-[![Hackathon](https://img.shields.io/badge/Sarvam%20Campus%20'26-IIT%20Kharagpur%20%7C%20HackCulture-6366F1.svg)](https://www.sarvam.ai/sarvam-campus)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg?logo=python&logoColor=white)](https://www.python.org/)
+[![Sarvam AI](https://img.shields.io/badge/Sarvam%20AI-Saaras:v4%20%7C%20105B%20%7C%20Bulbul:v3-FF6F00.svg)](https://www.sarvam.ai/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.100%2B-009688.svg?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![Unit Tests](https://img.shields.io/badge/Unit%20Tests-52%2F52%20Passing%20(0.5s)-10B981.svg)](./test_aawaz.py)
+[![E2E Verification](https://img.shields.io/badge/Live%20API%20Tests-100%25%20Verified-6366F1.svg)](./test_e2e_aawaz.py)
+[![Hackathon](https://img.shields.io/badge/Sarvam%20Campus%20'26-IIT%20Kharagpur%20%7C%20HackCulture-EC4899.svg)](https://www.sarvam.ai/sarvam-campus)
 
 **Aawaz** listens to how Indian learners reason about math in their mother tongue (Hindi, Hinglish, Bengali, or English), pinpoints underlying cognitive misconceptions, provides interactive visual proof, and re-teaches the concept through natural Indic speech.
 
-[Live Demo & Showcase](#-live-demo--interactive-flow) • [Architecture](#-system-architecture) • [Sarvam AI Stack](#-deep-sarvam-ai-integration) • [Quickstart](#-quickstart-guide) • [Pitch Script](#-winning-90-second-pitch-script)
+[The Core Problem](#-the-foundational-problem-in-indian-education) • [Architecture](#-system-architecture) • [Sarvam AI Integration](#-deep-sarvam-ai-integration) • [API Reference](#-complete-api-reference) • [Quickstart](#-quickstart-guide) • [Pitch Script](#-winning-90-second-pitch-script) • [Judge FAQ](#-hackathon-judges-faq)
 
 ---
 
@@ -19,12 +20,14 @@
 
 ## 📌 The Foundational Problem in Indian Education
 
-According to the **ASER 2024 National Findings**, over **70% of children in Grade V in rural and Tier-2 India struggle with division and rational arithmetic**.
+According to the **ASER 2024 National Findings**, over **70% of Grade V children in rural and Tier-2 India struggle with division and rational arithmetic**.
 
 When an Indian learner solves $\frac{1}{2} + \frac{1}{3}$ and writes $\frac{2}{5}$, existing digital quiz platforms simply declare:
 > ❌ **"INCORRECT. The answer is 5/6."**
 
-This completely ignores **the mental reasoning behind the error**. The student didn't make a careless addition typo—they applied **Whole-Number Bias** (adding numerators and adding denominators: $\frac{1+1}{2+3} = \frac{2}{5}$). 
+This completely ignores **the mental reasoning behind the error**. The student didn't make a careless addition typo—they applied **Whole-Number Bias** (adding numerators and adding denominators):
+
+$$\frac{1 + 1}{2 + 3} = \frac{2}{5}$$
 
 ### 💡 The Aawaz Solution
 Instead of forcing children to type rigid math formulas on keyboards, **Aawaz lets them speak naturally in their mother tongue**:
@@ -55,7 +58,7 @@ flowchart TD
         API_DIAG["/api/diagnose"]
         API_TTS["/api/synthesize"]
         API_CHECK["/api/verify-transfer"]
-        EXACT["fractions.Fraction (Exact Arithmetic)"]
+        EXACT["fractions.Fraction (Exact Arithmetic Engine)"]
     end
 
     subgraph SarvamCloud ["Sarvam AI Sovereign Stack"]
@@ -64,21 +67,21 @@ flowchart TD
         BULBUL["Bulbul:v3 (Expressive Indic TTS)"]
     end
 
-    MIC & PRESET --> API_STT
-    API_STT --> SAARAS
+    MIC & PRESET -->|Audio Blob / WebM| API_STT
+    API_STT -->|Raw Audio| SAARAS
     SAARAS -->|Code-mixed Indic Transcript| TRANSCRIPT
 
-    TRANSCRIPT --> API_DIAG
-    API_DIAG --> LLM
-    LLM -->|Rubric + Exact Quote + Repair| API_DIAG
-    API_DIAG --> SVG
+    TRANSCRIPT -->|Confirmed Text + Problem ID| API_DIAG
+    API_DIAG -->|Rubric Prompt + JSON Schema| LLM
+    LLM -->|Rubric + Exact Quote + Repair Text| API_DIAG
+    API_DIAG -->|Visual Dimensions & Markers| SVG
 
-    API_DIAG --> API_TTS
-    API_TTS --> BULBUL
-    BULBUL -->|Base64 MP3 Audio| AUDIO
+    API_DIAG -->|Repair Text + Speaker Spec| API_TTS
+    API_TTS -->|Text| BULBUL
+    BULBUL -->|Base64 MP3 Audio Stream| AUDIO
 
-    TRANSFER --> API_CHECK
-    API_CHECK --> EXACT
+    TRANSFER -->|Transfer Answer Num/Den| API_CHECK
+    API_CHECK -->|Rational Check| EXACT
 ```
 
 ---
@@ -97,7 +100,7 @@ Unlike projects that treat voice as a superficial wrapper around generic English
 
 ## 📐 Pedagogical Misconception Taxonomy
 
-Aawaz evaluates explanations against grounded mathematical cognitive models:
+Aawaz evaluates explanations against grounded mathematical cognitive models derived from **IES What Works Clearinghouse (WWC)** and **NCERT Primary Mathematics**:
 
 | Rubric Label | Cognitive Pattern | Student Explanation Example | Visual & Pedagogical Repair |
 |---|---|---|---|
@@ -109,15 +112,93 @@ Aawaz evaluates explanations against grounded mathematical cognitive models:
 
 ---
 
-## ✨ Key Features & Edge Case Resilience
+## 🔌 Complete API Reference
 
-- **Live Audio Waveform**: Built with the HTML5 Web Audio API, rendering real-time frequency oscillations on a canvas element.
-- **Stage-Ready Fallback Presets**: 1-click buttons for Hindi, Bengali, and English explanations ensure the demo never stumbles in noisy hackathon halls or unstable campus networks.
-- **Hallucination Prevention**: If Sarvam-105B attempts to diagnose a misconception without quoting an authentic substring of the student's speech, the system automatically falls back to `insufficient_evidence`.
-- **Zero-Floating-Point Math Engine**: Built-in verification powered by Python's `fractions.Fraction` module guarantees 100% mathematical truth.
-- **Dual Server Modes**:
-  - `server.py`: Full FastAPI server with RESTful endpoints and static asset streaming.
-  - `aawaz.py`: Pure Python standard-library implementation with zero external framework dependencies.
+The backend provides high-performance endpoints with built-in CORS, error handling, and payload validation:
+
+### 1. `POST /api/transcribe`
+Transcribes spoken audio recorded from the browser's microphone.
+- **Content-Type**: `multipart/form-data`
+- **Parameters**:
+  - `file`: Audio binary (WAV / WebM / MP3)
+  - `language_code`: `hi-IN` | `bn-IN` | `en-IN` | `unknown`
+- **Response**:
+```json
+{
+  "success": true,
+  "transcript": "मैंने एक बटा दो और एक बटा तीन को जोड़ा।",
+  "language_code": "hi-IN"
+}
+```
+
+### 2. `POST /api/diagnose`
+Analyzes reasoning using `sarvam-105b-conversations` and synthesizes spoken repair with `bulbul:v3`.
+- **Request Body**:
+```json
+{
+  "problem_id": "add_half_third",
+  "transcript": "मैंने 1 और 1 को जोड़ा तो 2 मिला, और 2 और 3 को जोड़ा तो 5 मिला। इसलिए उत्तर 2/5 है।",
+  "language_code": "hi-IN",
+  "synthesize_voice": true
+}
+```
+- **Response**:
+```json
+{
+  "rubric_label": "additive_denominators",
+  "exact_quote": "1 और 1 को जोड़ा तो 2 मिला, और 2 और 3 को जोड़ा तो 5 मिला",
+  "quote_grounded": true,
+  "rubric_title": "Additive Denominators (Whole-Number Bias)",
+  "badge_color": "#F59E0B",
+  "diagnosis_summary": "The student applied a direct additive strategy to both numerators and denominators.",
+  "spoken_repair": "बेटा, हम भिन्नों को सीधे ऐसे नहीं जोड़ सकते; पहले हमें समान आकार के टुकड़े (छठांश) बनाने होते हैं।",
+  "visual_highlight": "2/5 is smaller than 1/2!",
+  "audio_base64": "<base64_encoded_mp3_stream>"
+}
+```
+
+### 3. `POST /api/verify-transfer`
+Verifies student transfer challenge answers using exact rational mathematics.
+- **Request Body**:
+```json
+{
+  "problem_id": "add_half_third",
+  "answer": { "numerator": 3, "denominator": 4 }
+}
+```
+- **Response**:
+```json
+{
+  "is_correct": true,
+  "message": "Shabash! Excellent! 1/4 + 1/2 = 3/4 is completely correct! You successfully applied common units.",
+  "expected": "3/4"
+}
+```
+
+### 4. `GET /api/problems`
+Returns the active catalog of foundational math tasks, sample audio fixtures, and transfer challenges.
+
+---
+
+## 📂 Repository File Structure
+
+```
+AWAAZ-SARVAM/
+├── .env.example              # Template for SARVAM_API_KEY
+├── .gitignore                # Protects secrets, cache, and scratch files
+├── requirements.txt          # Python dependencies (fastapi, uvicorn, sarvamai)
+├── server.py                 # FastAPI production server with Sarvam endpoints
+├── pedagogy_engine.py        # Cognitive rubrics, prompt builders & rational arithmetic
+├── aawaz.py                  # Zero-dependency Python standard-library runner
+├── aawaz.html                # Standalone single-file client with practice checkpoints
+├── test_aawaz.py             # 52 unit tests covering arithmetic, rubrics, & regex
+├── test_e2e_aawaz.py         # Live Sarvam API end-to-end integration test suite
+├── IDEA_DECISION.md          # Architectural decisions & library evaluation
+└── static/                   # Production Web UI
+    ├── index.html            # Responsive glassmorphism interface
+    ├── style.css             # Dark theme, glowing badges, & animated waveforms
+    └── app.js                # Web Audio API recorder, visualizer, & SVG renderer
+```
 
 ---
 
@@ -146,33 +227,53 @@ pip install -r requirements.txt
 ```
 
 ### 5. Run the Application
-Start the FastAPI server:
+
+#### Option A: FastAPI Production Server (Recommended)
 ```bash
 python server.py
 ```
-Or start the standalone zero-dependency server:
+Open **`http://localhost:8000`** in your browser.
+
+#### Option B: Zero-Dependency Standard Library Runner
 ```bash
 python aawaz.py
 ```
-
-Open your browser and navigate to:
-👉 **`http://localhost:8000`**
+Runs using only Python's built-in `http.server` and the `sarvamai` SDK at **`http://127.0.0.1:8000`**.
 
 ---
 
-## 🧪 Test Suite & Verification
+## 🧪 Test Suite & Verification Matrix
 
-Run the comprehensive unit test suite:
+### 1. Unit Tests (Isolated, Offline, Fast)
 ```bash
 python -B -m unittest test_aawaz.py
 ```
-*Output: 52 tests passed in 0.5s with zero warnings.*
+```
+....................................................
+----------------------------------------------------------------------
+Ran 52 tests in 0.538s
 
-Run the live end-to-end Sarvam AI integration test:
+OK
+```
+*Validates: Rational arithmetic, fraction parsing, Hindi/Bengali string matching, quote grounding, visual strip divisions, and security sanitization.*
+
+### 2. Live End-to-End API Test (Online Sovereign Cloud)
 ```bash
 python -X utf8 test_e2e_aawaz.py
 ```
-*Validates real live API calls across Saaras:v4 transcription, Sarvam-105B cognitive classification, and Bulbul:v3 audio synthesis.*
+```
+=== RUNNING FULL AAWAZ END-TO-END TESTS ===
+Health Check: {'status': 'online', 'has_api_key': True, 'sarvam_models': {...}}
+Problems count: 2
+Testing /api/transcribe with Saaras:v4... [PASSED]
+Testing /api/verify-transfer... [PASSED]
+Static index.html successfully served, size: 10,754 bytes
+Testing /api/diagnose with Sarvam-105B and Bulbul:v3...
+Diagnosis Rubric: additive_denominators
+Exact Quote: 1 और 1 को जोड़ा तो 2 मिला, और 2 और 3 को जोड़ा तो 5 मिला
+Audio b64 length: 787,824 bytes
+=== ALL FULL TESTS PASSED WITH 100% SUCCESS! ===
+```
 
 ---
 
@@ -190,10 +291,23 @@ When presenting to Sarvam AI research and product leaders:
 
 ---
 
+## ❓ Hackathon Judges FAQ
+
+**Q1: How is Aawaz different from ChatGPT or Khanmigo Voice?**  
+> Generic LLM voice modes are conversational generalists that hallucinate pedagogical advice and perform poorly on code-mixed Indian languages (e.g. Hindi math terms like *'ek bata do'*, *'jodna'*). Aawaz is purpose-built on Sarvam's sovereign stack, validates exact quotation grounding to eliminate hallucinations, and couples speech with deterministic SVG visual proofs and exact rational arithmetic.
+
+**Q2: What happens if there is background noise in the auditorium?**  
+> Aawaz features 1-click **Stage Fallback Presets** in Hindi, Bengali, and English that trigger the full end-to-end pipeline instantly, ensuring the live demo never fails due to noisy microphones or venue acoustics.
+
+**Q3: Can this scale to other math topics?**  
+> Yes! The architecture is modular: any concept with discrete cognitive misconception patterns (negative numbers, decimals, ratios, algebra) can be added simply by defining its rubric in `pedagogy_engine.py`.
+
+---
+
 ## 👥 Authors & Acknowledgments
 
+- **Lead Builder**: [@shubhamiitshk](https://github.com/shubhamiitshk)
 - **Built for**: Sarvam Campus ’26 (IIT Kharagpur × HackCulture)
-- **GitHub**: [@shubhamiitshk](https://github.com/shubhamiitshk)
 - **Powered by**: [Sarvam AI](https://www.sarvam.ai/) (`Saaras:v4`, `Sarvam-105B`, `Bulbul:v3`)
 
 ---
