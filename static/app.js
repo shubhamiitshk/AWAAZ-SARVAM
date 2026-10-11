@@ -394,31 +394,54 @@ document.addEventListener('DOMContentLoaded', () => {
     draw();
   }
 
+  function blobToBase64(blob) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const result = reader.result;
+        const base64 = result.includes(',') ? result.split(',')[1] : result;
+        resolve(base64);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  }
+
   async function handleRecordingComplete() {
     const audioBlob = new Blob(state.audioChunks, { type: 'audio/webm' });
     recordingStatusText.textContent = 'Transcribing voice with Saaras:v4...';
 
-    const formData = new FormData();
-    formData.append('file', audioBlob, 'recording.webm');
-    formData.append('language_code', state.selectedLanguage);
-
     try {
+      const base64Audio = await blobToBase64(audioBlob);
+      
       const res = await fetch('/api/transcribe', {
         method: 'POST',
-        body: formData
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          audio: base64Audio,
+          mime_type: audioBlob.type || 'audio/webm',
+          language: state.selectedLanguage,
+          language_code: state.selectedLanguage
+        })
       });
+
+      if (!res.ok) {
+        throw new Error('Server returned ' + res.status);
+      }
+
       const data = await res.json();
+      const transcript = (data.transcript || '').trim();
       
-      if (data.success && data.transcript) {
-        transcriptInput.value = data.transcript;
+      if (transcript) {
+        transcriptInput.value = transcript;
         diagnoseBtn.disabled = false;
         recordingStatusText.textContent = 'Transcribed! Click Diagnose or edit transcript.';
       } else {
-        recordingStatusText.textContent = 'Could not capture clear speech. Please try again.';
+        recordingStatusText.textContent = 'Speech was quiet or unclear. Please try speaking again or use presets below.';
       }
     } catch (err) {
-      console.error('Transcription error:', err);
-      recordingStatusText.textContent = 'Transcription failed. Please check network or type transcript.';
+      console.warn('Transcription API call notice:', err);
+      recordingStatusText.textContent = 'Note: For live cloud STT, run "python server.py" or use the 1-click stage demo presets below!';
     }
   }
 

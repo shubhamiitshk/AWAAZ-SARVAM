@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Any, Dict, Optional
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, File, Form, HTTPException, UploadFile
+from fastapi import FastAPI, File, Form, HTTPException, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
@@ -72,21 +72,40 @@ def get_problems():
     }
 
 @app.post("/api/transcribe")
-async def transcribe_audio(
-    file: UploadFile = File(...),
-    language_code: str = Form("hi-IN")
-):
+async def transcribe_audio(request: Request):
     if not sarvam_client:
         raise HTTPException(status_code=500, detail="Sarvam API key is not configured in .env")
     
     try:
-        content = await file.read()
-        filename = file.filename or "audio_input.webm"
-        content_type = file.content_type or "audio/webm"
+        content_type = request.headers.get("content-type", "").lower()
         
+        if "multipart/form-data" in content_type:
+            form = await request.form()
+            file = form.get("file")
+            if not file:
+                raise HTTPException(status_code=400, detail="No audio file uploaded.")
+            content = await file.read()
+            filename = getattr(file, "filename", "audio_input.webm") or "audio_input.webm"
+            mime_type = getattr(file, "content_type", "audio/webm") or "audio/webm"
+            language_code = form.get("language_code", form.get("language", "hi-IN"))
+        else:
+            # Handle JSON body with base64 audio
+            body = await request.json()
+            raw_b64 = body.get("audio", "")
+            if not raw_b64:
+                raise HTTPException(status_code=400, detail="No audio payload provided.")
+            content = base64.b64decode(raw_b64)
+            mime_type = body.get("mime_type", "audio/webm")
+            ext = mime_type.split("/")[-1].split(";")[0] if "/" in mime_type else "webm"
+            filename = f"audio_input.{ext}"
+            language_code = body.get("language_code", body.get("language", "hi-IN"))
+        
+        if not content:
+            raise HTTPException(status_code=400, detail="Audio content is empty.")
+            
         # Call Sarvam Saaras:v4 STT
         stt_response = sarvam_client.speech_to_text.transcribe(
-            file=(filename, content, content_type),
+            file=(filename, content, mime_type),
             model="saaras:v4",
             language_code=language_code if language_code in ["hi-IN", "bn-IN", "en-IN"] else "unknown",
             mode="codemix"
@@ -98,6 +117,8 @@ async def transcribe_audio(
             "transcript": transcript.strip(),
             "language_code": language_code
         }
+    except HTTPException:
+        raise
     except Exception as e:
         print(f"Error during transcription: {e}")
         raise HTTPException(status_code=500, detail=f"Transcription failed: {str(e)}")
