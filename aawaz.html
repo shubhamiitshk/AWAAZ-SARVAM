@@ -96,6 +96,20 @@
     const canRecord = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder);
 
     function plain(value){return typeof value === 'string' ? value : value == null ? '' : String(value);}
+    function t(key){return (copy[ui.language.value] || copy['en-IN'])[key] || copy['en-IN'][key] || key;}
+    function localized(source,field){const map=source && source[field+'_localized'];return map && typeof map==='object' && typeof map[ui.language.value]==='string' ? map[ui.language.value] : plain(source && source[field]);}
+    function setConnection(){ui.connection.className='connection '+(state.serviceReady && state.keyConfigured?'ready':'error');ui.connectionText.textContent=!state.serviceReady?t('appUnavailable'):!state.keyConfigured?t('keyNeeded'):state.apiSucceeded?t('requestVerified'):t('keyConfigured');ui.connection.title=state.apiSucceeded?'A real request completed in this tab.':'Local key configuration only; access is checked when you send a request.';}
+    function markApiResponse(){state.apiSucceeded=true;setConnection();}
+    function applyLanguage(){
+      document.body.dataset.language=ui.language.value;document.querySelectorAll('[data-i18n]').forEach(element=>element.textContent=t(element.dataset.i18n));
+      for(const [element,number,key] of [[ui.stepExplain,1,'explain'],[ui.stepCheck,2,'understand'],[ui.stepRetry,3,'transfer']]){const numberSpan=document.createElement('span');numberSpan.textContent=number;element.replaceChildren(numberSpan,document.createTextNode(t(key)));}
+      for(const [id,number,key] of [['thinkingTitle','01','yourThinking'],['insightTitle','02','closerLook']]){const numberSpan=document.createElement('span');numberSpan.className='index';numberSpan.textContent=number;byId(id).replaceChildren(numberSpan,document.createTextNode(t(key)));}
+      [...ui.topic.options].forEach(option=>option.textContent=t(option.value));
+      ui.transcript.placeholder=t('placeholder');ui.transcript.lang=ui.language.value.split('-')[0];ui.question.lang=ui.transcript.lang;ui.nextQuestionText.lang=ui.transcript.lang;
+      ui.recordHeading.textContent=t('recordHeading');ui.recordHint.textContent=canRecord?t('recordHint'):t('recordUnavailable');ui.upload.textContent=t('upload');ui.downloadJson.setAttribute('aria-label',t('downloadJson'));
+      const points=[t('evidenceStep'),t('partsStep'),t('transferStep')];[...ui.emptyChecks.children].forEach((element,index)=>element.textContent=points[index]);
+      if(state.serviceReady)setConnection();
+    }
     function publicError(message){const error=new Error(message);error.publicMessage=message;return error;}
     function status(message,pending=false){ui.status.textContent=message;ui.status.classList.toggle('pending',pending);}
     function clearError(){ui.errorBox.hidden=true;ui.errorMessage.textContent='';ui.retry.hidden=true;state.retry=null;}
@@ -104,17 +118,19 @@
       const locked=state.busy || state.recording;
       ui.topic.disabled=locked;ui.language.disabled=locked;ui.consent.disabled=locked;ui.transcript.disabled=locked;ui.answer.disabled=locked;
       ui.record.disabled=state.busy || !state.serviceReady || !state.keyConfigured || !canRecord;
-      ui.record.textContent=state.recording ? 'Stop & transcribe' : 'Record';
+      ui.record.textContent=state.recording ? t('stopRecord') : t('record');
       ui.upload.disabled=locked || !state.serviceReady || !state.keyConfigured;
       ui.analyze.disabled=locked || !state.serviceReady || !state.keyConfigured || !ui.transcript.value.trim();
       ui.speak.disabled=locked || !state.current || !plain(state.current.feedback).trim();
-      ui.startFollowup.disabled=locked || !state.current || state.stage!=='initial' || !state.followupQuestion;
-      ui.restart.disabled=locked;ui.retry.disabled=locked;
+      ui.startFollowup.disabled=locked || !state.current || state.stage!=='initial' || !state.followupQuestion || !state.checkpoint || !state.checkpoint.completed;
+      ui.restart.disabled=locked;ui.retry.disabled=locked;ui.clarifyButton.disabled=locked;
+      ui.sessionTools.hidden=!(state.currentRecord || state.beforeRecord);ui.downloadText.disabled=locked;ui.downloadJson.disabled=locked;
+      ui.checkpointOptions.querySelectorAll('button').forEach(button=>button.disabled=locked || !!(state.checkpoint && state.checkpoint.completed));
       document.querySelectorAll('[data-sample]').forEach(button => button.disabled=locked);
     }
     function setBusy(value,message=''){state.busy=value;if(message)status(message,value);else ui.status.classList.toggle('pending',value);updateControls();}
     function revokeSpeech(){ui.speechPlayer.pause();ui.speechPlayer.removeAttribute('src');ui.speechPlayer.load();ui.speechPlayer.hidden=true;if(state.audioUrl)URL.revokeObjectURL(state.audioUrl);state.audioUrl=null;ui.voiceStatus.textContent='';}
-    function setVerdict(element,value){element.className='verdict '+(verdictLabels[value] ? value : 'unclear');element.textContent=verdictLabels[value] || verdictLabels.unclear;}
+    function setVerdict(element,value){element.className='verdict '+(verdictLabels[value] ? value : 'unclear');element.textContent=t(verdictLabels[value]?value:'unclear');}
     function renderComparison(){
       ui.comparison.hidden=!state.before;ui.comparisonNote.hidden=!state.before;
       if(!state.before)return;
@@ -122,18 +138,50 @@
       ui.beforeQuote.textContent=plain(state.before.evidence_quote) || plain(state.before.label) || 'No clear reasoning in the first explanation.';
       ui.afterVerdict.hidden=!state.current;
       if(state.current){setVerdict(ui.afterVerdict,state.current.verdict);ui.afterQuote.textContent=plain(state.current.evidence_quote) || plain(state.current.label) || 'No clear reasoning in the follow-up.';}
-      else ui.afterQuote.textContent='Waiting for your next explanation.';
+      else ui.afterQuote.textContent=t('waitingNext');
     }
     function invalidateResult(){
-      state.current=null;state.followupQuestion='';revokeSpeech();ui.result.hidden=true;ui.emptyState.hidden=false;ui.emptyState.classList.remove('busy');ui.emptyChecks.hidden=false;
-      ui.emptyTitle.textContent=state.stage==='followup' ? 'A fresh question. Your next idea.' : 'There’s more inside an answer.';
-      ui.emptyText.textContent=state.stage==='followup' ? 'Explain this one in your own words. We’ll compare the two explanations.' : 'Explain your thinking, then we’ll look for the idea behind it.';
-      ui.outputLabel.textContent=state.stage==='followup' ? 'First explanation → follow-up' : 'Your reasoning, made visible';
+      state.current=null;state.currentRecord=null;state.checkpoint=null;state.followupQuestion='';revokeSpeech();ui.result.hidden=true;ui.checkpoint.hidden=true;ui.checkpointOptions.replaceChildren();ui.emptyState.hidden=false;ui.emptyState.classList.remove('busy');ui.emptyChecks.hidden=false;
+      ui.emptyTitle.textContent=t(state.stage==='followup'?'emptyFollowTitle':'emptyTitle');
+      ui.emptyText.textContent=t(state.stage==='followup'?'emptyFollowText':'emptyText');
+      ui.outputLabel.textContent=state.stage==='followup' ? t('firstStage')+' → '+t('followupStage') : t('closerLook');
       ui.stepExplain.classList.toggle('active',state.stage==='initial');ui.stepCheck.classList.remove('active');ui.stepRetry.classList.toggle('active',state.stage==='followup');renderComparison();updateControls();
     }
-    function refreshQuestion(){const topic=state.topics.find(item=>item.id===ui.topic.value) || fallbackTopics[0];ui.question.textContent=state.stage==='followup' ? state.nextQuestion : topic.question;ui.questionEyebrow.textContent=state.stage==='followup' ? 'A fresh question' : 'The question';ui.questionCard.classList.toggle('followup',state.stage==='followup');ui.stageLabel.textContent=state.stage==='followup' ? 'Follow-up explanation' : 'First explanation';ui.questionHint.textContent=state.stage==='followup' ? 'Use what you noticed. Tell us how you worked it out.' : 'Tell us your answer and why it makes sense to you.';ui.samples.hidden=state.stage==='followup';ui.answer.placeholder=ui.topic.value==='comparison' ? 'e.g. 1/8 or 1/4' : 'e.g. 2/5';}
-    function resetPractice(){state.stage='initial';state.before=null;state.nextQuestion='';ui.transcript.value='';ui.answer.value='';clearError();status('');invalidateResult();refreshQuestion();}
-    function requireConsent(){if(ui.consent.checked)return true;showError(publicError('Please confirm sharing with Sarvam before continuing.'));ui.consent.focus();return false;}
+    function refreshQuestion(){const topic=state.topics.find(item=>item.id===ui.topic.value) || fallbackTopics[0];ui.question.textContent=state.stage==='followup' ? state.nextQuestion : localized(topic,'question');ui.questionEyebrow.textContent=t(state.stage==='followup'?'freshQuestion':'questionLabel');ui.questionCard.classList.toggle('followup',state.stage==='followup');ui.stageLabel.textContent=t(state.stage==='followup'?'followupStage':'firstStage');ui.questionHint.textContent=t(state.stage==='followup'?'followupHint':'questionHint');ui.samples.hidden=state.stage==='followup';ui.answer.placeholder=ui.topic.value==='comparison' ? '1/8 or 1/4' : '2/5';}
+    function resetPractice(){state.stage='initial';state.before=null;state.beforeRecord=null;state.beforeCheckpoint=null;state.nextQuestion='';ui.transcript.value='';ui.answer.value='';clearError();status('');applyLanguage();invalidateResult();refreshQuestion();}
+    function requireConsent(){if(ui.consent.checked)return true;showError(publicError(t('consentError')));ui.consent.focus();return false;}
+
+    function prepareCheckpoint(result){
+      const eligible=state.stage==='initial' && result.checkpoint_eligible===true && !ui.visual.hidden;
+      ui.checkpoint.hidden=!eligible;state.checkpoint=null;ui.checkpointOptions.replaceChildren();ui.checkpointFeedback.hidden=true;ui.checkpointSuccess.hidden=true;
+      if(!eligible)return;
+      const definition=checkpointContent[ui.language.value][ui.topic.value];
+      state.checkpoint={kind:'local_practice',question:definition.question,completed:false,attempts:[]};ui.checkpointQuestion.textContent=definition.question;
+      definition.choices.forEach(choice=>{const button=document.createElement('button');button.type='button';button.className='btn checkpoint-choice';button.textContent=choice.text;button.dataset.choice=choice.id;button.addEventListener('click',()=>{
+        if(state.busy || !state.checkpoint || state.checkpoint.completed)return;
+        const correct=choice.id===definition.correct;state.checkpoint.attempts.push({choice_id:choice.id,explanation:choice.text,correct});state.checkpoint.completed=correct;
+        ui.checkpointOptions.querySelectorAll('button').forEach(item=>{item.classList.toggle('selected',item===button);item.classList.toggle('correct-choice',item===button && correct);});
+        ui.checkpointFeedback.textContent=definition.explanation+(correct?'':' '+t('checkpointRetry'));ui.checkpointFeedback.hidden=false;ui.checkpointSuccess.hidden=!correct;ui.nextQuestionHint.textContent=t(correct?'freshHint':'blockedFreshHint');if(correct)status(t('checkpointComplete'));updateControls();
+      });ui.checkpointOptions.append(button);});
+    }
+    function sessionReport(){
+      const initial=state.stage==='initial'?state.currentRecord:state.beforeRecord;
+      const transfer=state.stage==='followup'?state.currentRecord:null;
+      return {product:'Aawaz',schema_version:1,exported_at:new Date().toISOString(),topic:ui.topic.value,language:ui.language.value,initial,practice_checkpoint:state.stage==='followup'?state.beforeCheckpoint:state.checkpoint,fresh_transfer:transfer,note:'AI checks use the submitted explanations. The checkpoint is a fixed local practice activity. This report contains no mastery score.'};
+    }
+    function downloadSession(format){
+      if(state.busy || state.recording || !(state.currentRecord || state.beforeRecord))return;
+      const report=sessionReport();let content;
+      if(format==='json')content=JSON.stringify(report,null,2);
+      else{
+        const lines=['AAWAZ — '+t('sessionLabel'),t(ui.topic.value)+' · '+ui.language.value,''];
+        const addCheck=(heading,record)=>{lines.push(heading);if(!record){lines.push('Not completed.','');return;}lines.push(record.question,t('explanationLabel')+': '+record.transcript);if(record.answer)lines.push(t('answerLabel')+': '+record.answer);lines.push(t(record.verdict)+': '+record.label,t('evidenceStep')+': '+(record.evidence_quote || t('noEvidence')),t('yourAnswer')+' '+plain(record.answer_check.claimed)+' · '+t('expectedAnswer')+' '+plain(record.answer_check.expected),record.feedback,'');};
+        addCheck('1. '+t('firstStage'),report.initial);lines.push('2. '+t('checkpointLabel')+' (local practice)');const practice=report.practice_checkpoint;
+        if(practice){lines.push(practice.question,...practice.attempts.map((attempt,index)=>(index+1)+'. '+attempt.explanation+' — '+(attempt.correct?'correct':'retry')),practice.completed?t('checkpointSuccess'):'Not completed.','');}else lines.push('Not completed.','');
+        addCheck('3. '+t('followupStage'),report.fresh_transfer);lines.push(report.note);content=lines.join('\n');
+      }
+      const blob=new Blob([content],{type:format==='json'?'application/json;charset=utf-8':'text/plain;charset=utf-8'}),url=URL.createObjectURL(blob),anchor=document.createElement('a');anchor.href=url;anchor.download='aawaz-session-'+Date.now()+'.'+(format==='json'?'json':'txt');document.body.append(anchor);anchor.click();anchor.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+    }
 
     async function request(path,body){
       const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),90000);
