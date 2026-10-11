@@ -1,0 +1,19 @@
+# Environment secrets
+.env
+.env.local
+.env.*.local
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# Audio scratch recordings
+test_audio.wav
+*.wav.tmp
+
+# OS files
+.DS_Store
+Thumbs.db

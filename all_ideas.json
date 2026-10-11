@@ -1,0 +1,302 @@
+[
+  {
+    "row": 2,
+    "sno": 2.0,
+    "product": "API",
+    "idea": "Voice Agent QA Platform:\n- Platform to simulate thousands of real-world conversations to stress-test voice agents before launch, covering edge cases like interruptions, noisy audio, policy violations, and difficult callers\n- Monitor production calls by agents, evaluating live conversations for latency, hallucinations, compliance, resolution rate, sentiment, and other quality metrics to detect failures early\n- Continuously improve agent performance through automated evaluations, human QA review, regression testing, and actionable insights so every release is more reliable than the last"
+  },
+  {
+    "row": 3,
+    "sno": 3.0,
+    "product": "API",
+    "idea": "LLM Knowledge Pipeline:\n- Extract and structure knowledge from PDFs, documents, and manuals into an AI-ready format\n- Generate high-quality training or RAG datasets by creating instruction-answer pairs, metadata, and citations automatically\n- Evaluate and improve dataset quality through deduplication, chunking, hallucination checks, and retrieval benchmarking"
+  },
+  {
+    "row": 4,
+    "sno": 4.0,
+    "product": "API",
+    "idea": "Document Intelligence Agent:\n- Extract and structure data from PDFs, forms, invoices, reports, and scanned documents into a unified, queryable dataset\n- Generate insights and dashboards by transforming unstructured document data into analytics-ready formats for BI and visualization tools\n- Automate business workflows by triggering alerts, approvals, reports, and downstream actions from extracted information"
+  },
+  {
+    "row": 5,
+    "sno": 5.0,
+    "product": "API",
+    "idea": "AI Avatar Tutor:\n- Teach through lifelike AI avatars with expressive voice, gestures, and multilingual conversations.\n- Explain concepts visually using whiteboards, diagrams, documents, and interactive demonstrations.\n- Personalize every session with adaptive questioning, instant feedback, and progress tracking."
+  },
+  {
+    "row": 6,
+    "sno": 6.0,
+    "product": "API",
+    "idea": "Citizen Services Agent \n- Answer citizen queries about government schemes, taxes, pensions, and certificates in regional languages.\n- Assist with applications by collecting information, verifying documents, and guiding users step-by-step.\n- Track requests and provide proactive status updates through voice, WhatsApp, or phone calls."
+  },
+  {
+    "row": 7,
+    "sno": 7.0,
+    "product": "Conversation",
+    "idea": "Sales Agent:\n- Automates outbound customer outreach through AI voice and messaging for lead qualification, reminders, bookings, and follow-ups\n- Handles natural multilingual conversations, answering queries, qualifying leads, and escalating to human agents when needed\n- Integrates with business systems like CRMs and calendars to automate workflows and keep customer data up to date"
+  },
+  {
+    "row": 8,
+    "sno": 8.0,
+    "product": "Conversation",
+    "idea": "Personal AI Call Assistant:\n- Answer and screen incoming calls with natural voice conversations, identifying caller intent and filtering spam or low-priority calls\n- Act on the user's behalf by answering questions, collecting information, scheduling follow-ups, or seamlessly transferring important calls to the user\n- Generate actionable call summaries with key insights, action items, and conversation history to help users stay informed without answering every call"
+  },
+  {
+    "row": 9,
+    "sno": 8.0,
+    "product": "Conversation",
+    "idea": "Healthcare Agent:\n- Automates patient intake and scheduling with appointment booking, confirmations, and reminders\n- Engages patients proactively through follow-ups, care reminders, and re-engagement campaigns\n- Supports insurance workflows with cashless insurance verification, pre-authorization updates, and claims coordination"
+  },
+  {
+    "row": 10,
+    "sno": 9.0,
+    "product": "Conversation",
+    "idea": "AI Recruiting Agent:\n- Run autonomous first-round interviews that qualify candidates, probe deeper with follow-up questions, evaluate competencies, and produce structured hiring recommendations.\n- Manage the recruiting lifecycle by automating candidate outreach, interview scheduling, recruiter coordination, application tracking, and personalized status updates through natural voice conversations."
+  },
+  {
+    "row": 11,
+    "sno": 10.0,
+    "product": "Conversation",
+    "idea": "Elder Companion Agent:\n- Check in on seniors daily through friendly voice calls covering wellbeing, mood, meals, and medication in their regional language.\n- Support health and safety by reminding about medicines and appointments, capturing symptoms, and warning against scams and fraudulent calls.\n- Keep families informed with daily wellbeing summaries and proactive alerts for missed calls, health red flags, or emergencies via WhatsApp or phone."
+  },
+  {
+    "row": 12,
+    "sno": 11.0,
+    "product": "Conversation",
+    "idea": "Wellness Coach:\nAutomates daily health tracking with proactive check-in calls for food intake, workouts, and sleep — capturing everything by voice, no app logging required\nEngages users continuously through personalized nudges, missed-workout follow-ups, and adaptive plan adjustments based on progress and energy levels\nSupports holistic coaching with voice-based nutrition estimation, macro and calorie tracking, sleep-quality guidance, and trend-based recommendations across code-mixed Indian languages"
+  },
+  {
+    "row": 13,
+    "sno": 12.0,
+    "product": "Agents",
+    "idea": "Clinical Multi-Agent System\n- Orchestrate specialized AI agents for patient intake, clinical reasoning, medical knowledge retrieval, diagnostics, and documentation across the care journey\n- Coordinate multimodal clinical data by analyzing patient records, lab results, imaging, prescriptions, and clinical guidelines to generate unified insights\n- Support clinical decision-making with evidence-backed recommendations, explainable reasoning, and seamless handoffs between AI agents and healthcare professionals"
+  },
+  {
+    "row": 14,
+    "sno": 13.0,
+    "product": "Agents",
+    "idea": "AI DevOps Operations Agent \n- Monitor infrastructure, applications, and deployments by correlating logs, metrics, alerts, and traces to detect incidents in real time\n- Automate incident response through root cause analysis, alert prioritization, code change analysis, and actionable remediation recommendations\n- Manage engineering operations by enforcing access policies, validating deployments, monitoring system health, and orchestrating recovery workflows across developer tools and cloud infrastructure"
+  },
+  {
+    "row": 15,
+    "sno": 14.0,
+    "product": "Agents",
+    "idea": "Marketing AI Coworker\n- Deploy specialized AI agents for SEO optimization, ad campaign analysis, keyword research, and content generation to execute end-to-end marketing workflows\n- Collaborate with marketing teams by reviewing website performance, optimizing campaigns, generating high-converting copy, and recommending growth opportunities\n- Continuously monitor and optimize search rankings, ad performance, content quality, and campaign ROI through autonomous analysis and actionable recommendations"
+  },
+  {
+    "row": 16,
+    "sno": 15.0,
+    "product": "Agents",
+    "idea": "Finance Operations Agent\n- Orchestrate specialized AI agents for accounts payable, accounts receivable, reconciliations, and financial close across ERP and accounting systems\n- Automate financial workflows by processing invoices, tracking payments, reconciling transactions, and preparing journal entries and financial records\n- Accelerate month-end close with anomaly detection, compliance checks, audit-ready reports, and AI-assisted book preparation"
+  },
+  {
+    "row": 17,
+    "sno": 16.0,
+    "product": "Agents",
+    "idea": "Incident Response Agent\n- Correlate alerts, logs, traces, and recent deployments\n- Identify the likely root cause\n- Open remediation PRs, rollback deployments, or create incident reports"
+  },
+  {
+    "row": 18,
+    "sno": 17.0,
+    "product": "Creatives",
+    "idea": "AI Podcast Generator:\n- Generate complete podcast episodes from a simple prompt, document, or topic, including research, script writing, and episode structure.\n- Produce natural, multi-speaker conversations using Bulbul and custom voices with realistic dialogue, pacing, and narration.\n- Create production-ready audio with voice customization, multilingual support, background music, and export-ready episodes."
+  },
+  {
+    "row": 19,
+    "sno": 18.0,
+    "product": "Creatives",
+    "idea": "Text-to-Speech Content Reader:\n\nConvert articles, documents, or scripts into natural-sounding narrated audio using Bulbul and custom voices.\nSupport multilingual narration with adjustable tone, speed, and emphasis for different content types (news, fiction, education).\nAuto-generate audio versions of written content (blogs, newsletters, docs) for accessibility and repurposing."
+  },
+  {
+    "row": 20,
+    "sno": 19.0,
+    "product": "Creatives",
+    "idea": "Voice Time Capsule:\n\nClone a grandparent's or parent's voice from old recordings/WhatsApp voice notes.\nGenerate new content in that voice, bedtime stories, birthday wishes, advice, for years after the fact."
+  },
+  {
+    "row": 21,
+    "sno": 20.0,
+    "product": "Creatives",
+    "idea": "Voice Journal Narrator:\n\nTurn written journal or diary entries into narrated audio memories in the user's own voice.\nCompile entries into periodic \"audio memoirs\"  a monthly or yearly spoken recap of one's own year.\nUseful as a personal reflection tool or a shareable audio keepsake for family archives."
+  },
+  {
+    "row": 22,
+    "sno": 21.0,
+    "product": "Creatives",
+    "idea": "Language Coach with Your Own Voice:\n\nClone a learner's voice, then generate correct pronunciation of new vocabulary or phrases in their own voice.\nRemoves the awkwardness of hearing a stranger's voice while learning, you hear yourself speaking correctly.\nWorks across Indian languages for accent and pronunciation practice."
+  },
+  {
+    "row": 23,
+    "sno": 22.0,
+    "product": "Pages",
+    "idea": "Intelligent Underwriting Agent\n- Cross-verify data across applications, bank statements, KYC documents, income proofs, and insurance records\n- Analyze each document independently to identify inconsistencies, missing information, and potential fraud\n- Deliver an explainable underwriting recommendation with supporting evidence, risk assessment, and approval or escalation decisions"
+  },
+  {
+    "row": 24,
+    "sno": 23.0,
+    "product": "Pages",
+    "idea": "Stamp Intelligence Agent\n- Extract stamps, seals, and signatures from documents\n- Validate authenticity, placement, and document compliance\n- Trigger automated approval, rejection, or fraud review workflows"
+  },
+  {
+    "row": 25,
+    "sno": 24.0,
+    "product": "Pages",
+    "idea": "Accounts Payable Agent\n- Extract and validate invoice data from documents\n- Match invoices with purchase orders and flag discrepancies\n- Automate approvals and payments through ERP workflows"
+  },
+  {
+    "row": 26,
+    "sno": 25.0,
+    "product": "Pages",
+    "idea": "Tender Bidding Agent\n- Analyze tender documents and extract key requirements, deadlines, and eligibility criteria\n- Generate bid responses using company knowledge, past proposals, and supporting documents"
+  },
+  {
+    "row": 27,
+    "sno": 26.0,
+    "product": "Pages",
+    "idea": "Heritage Storytelling Agent\n- Transcribe and translate historic manuscripts and oral archives\n- Transform historical content into interactive stories, podcasts, or guided tours\n- Bring history to life with natural multilingual voice narration"
+  },
+  {
+    "row": 28,
+    "sno": 27.0,
+    "product": "Saaras, Bulbul, Sarvam-105B, Sarvam Vision",
+    "idea": "Bank on a Phone Call:\n- Voice-first loan agent for feature phones conducting natural conversations in Indic languages (Saaras v4, Sarvam-105B, Bulbul v3)\n- Ingests and verifies KYC / income proof photos (Sarvam Vision) and compares loan products sourced directly to bank policy clauses\n- Fills application forms and manages end-to-end status tracking over phone calls"
+  },
+  {
+    "row": 29,
+    "sno": 28.0,
+    "product": "Sarvam Vision, Saaras",
+    "idea": "Claim-It (Insurance Claim Copilot):\n- Policyholders narrate hospitalisation or accident events by voice in their preferred language\n- Extracts policy documents and parses crumpled, handwritten bills to verify coverage clauses (Sarvam Vision)\n- Identifies missing documentation, drafts claims, and pre-fills insurer submission forms"
+  },
+  {
+    "row": 30,
+    "sno": 29.0,
+    "product": "Saaras, Bulbul, Sarvam-105B",
+    "idea": "Scheme-to-Pocket Benefit Finder:\n- Voice agent that interviews gig workers and delivery riders about income, city, and family\n- Cross-references EPFO, insurance, and pension schemes tailored for gig economy workers\n- Explains benefits in simple spoken regional language and completes the full signup journey"
+  },
+  {
+    "row": 31,
+    "sno": 30.0,
+    "product": "Saaras, Bulbul, Sarvam-105B",
+    "idea": "Aawaz se Diagnosis (Spoken Misconception Detector):\n- Transcribes student spoken reasoning using Saaras and classifies underlying misconceptions via Sarvam-105B\n- Re-teaches concepts adaptively using alternate modalities such as stories, number lines, and real-life analogies\n- Generates targeted spoken practice drills via Bulbul and updates per-skill student mastery graphs"
+  },
+  {
+    "row": 32,
+    "sno": 31.0,
+    "product": "Sarvam-105B",
+    "idea": "Bhasha Doubt Solver:\n- Interactive doubt solver that prompts students to explain their thought process before guiding them\n- Detects conceptual misconceptions and maintains a persistent longitudinal learner model\n- Adapts future explanations based on prior error history rather than providing direct answers"
+  },
+  {
+    "row": 33,
+    "sno": 32.0,
+    "product": "Saaras, Bulbul",
+    "idea": "Read-Aloud Fluency Coach:\n- Listens to early readers reading passages aloud and scores fluency and mispronunciations via Saaras\n- Models accurate native pronunciation and intonation across Indic languages using Bulbul v3\n- Generates targeted phoneme-level follow-up drills and tracks words correct per minute over time"
+  },
+  {
+    "row": 34,
+    "sno": 33.0,
+    "product": "Sarvam Vision",
+    "idea": "Record → Claim → Anchor Pipeline:\n- Extracts structured claims and confidence scores from land records, birth registers, or certificates using Sarvam Vision\n- Hashes original images and extracted claims, anchoring Merkle roots on a verifiable tamper-evident log\n- Generates verifier QR codes allowing third parties to audit AI extractions directly against original evidence"
+  },
+  {
+    "row": 35,
+    "sno": 34.0,
+    "product": "Sarvam Vision",
+    "idea": "Degree Verification Network:\n- Digital verification workflow for academic credentials and certificates replacing paper-based processes\n- Anchors verified certificate claims with tamper-evident cryptographic hashes and confidence scores\n- Enables employers and universities to inspect extracted fields side-by-side with raw document crops"
+  },
+  {
+    "row": 36,
+    "sno": 35.0,
+    "product": "Sarvam Vision",
+    "idea": "NGO Fund-Flow Receipt Integrity:\n- Digitizes and anchors disbursement receipts for scholarships and subsidies onto a verifiable ledger\n- Employs Sarvam Vision for multilingual OCR and automated receipt metadata structuring\n- Creates a transparent, publicly queryable integrity layer tracking public and philanthropic fund flows"
+  },
+  {
+    "row": 37,
+    "sno": 36.0,
+    "product": "Saaras, Sarvam Vision",
+    "idea": "Dispatcher-in-Your-Pocket:\n- Transcribes multilingual driver voice notes or IVR calls reporting transit delays via Saaras\n- Converts voice notes into structured logistics events and cross-references trip invoices via Sarvam Vision\n- Triggers automated operational actions (rerouting, customer alerts) with human escalation on low confidence"
+  },
+  {
+    "row": 38,
+    "sno": 37.0,
+    "product": "Sarvam Vision, Saaras",
+    "idea": "Voice Proof-of-Delivery:\n- Enables delivery agents to capture voice confirmation alongside photos of paper proof-of-delivery documents\n- Sarvam Vision parses consignee names and signatures while voice input serves as an auditable legal artifact\n- Automates instant delivery verification and exception flagging across logistics networks"
+  },
+  {
+    "row": 39,
+    "sno": 38.0,
+    "product": "Sarvam Vision, Sarvam-105B",
+    "idea": "Freight-Invoice Reconciliation Agent:\n- Automatically extracts line items, taxes, and amounts from supplier invoices using Sarvam Vision\n- Reconciles invoice details against purchase orders to flag mismatches in price, quantity, or GST\n- Drafts multilingual dispute and clarification emails directly to suppliers in their language"
+  },
+  {
+    "row": 40,
+    "sno": 39.0,
+    "product": "Saaras, Sarvam Vision, Sarvam-105B",
+    "idea": "Sunniye, Samjhiye (Patient Intake Storyteller):\n- Records patient narratives in regional languages during OPD triage and parses prior scrawled prescriptions\n- Generates a two-column clinical summary separating verbatim extracted facts from AI hypotheses\n- Links clinical facts directly to originating audio timestamps and captures doctor sign-off artifacts"
+  },
+  {
+    "row": 41,
+    "sno": 40.0,
+    "product": "Sarvam Vision, Bulbul",
+    "idea": "Discharge-Summary Decoder:\n- Ingests complex hospital discharge summaries and insurance pre-authorization letters via Sarvam Vision\n- Translates medical terminology into clear, accessible spoken explanations via Bulbul v3\n- Generates actionable weekly post-discharge recovery checklists and schedules follow-up consultations"
+  },
+  {
+    "row": 42,
+    "sno": 41.0,
+    "product": "Saaras, Bulbul, Sarvam-105B",
+    "idea": "Missed-Dose & Follow-Up Companion:\n- Automated outbound voice agent checking on post-discharge rural patients in their native languages\n- Conducts structured non-diagnostic check-ins regarding medication adherence, symptoms, and appointments\n- Proactively escalates anomalies and missed doses to supervising healthcare coordinators"
+  },
+  {
+    "row": 43,
+    "sno": 42.0,
+    "product": "Saaras, Sarvam Vision, Sarvam-105B",
+    "idea": "Signal Fusion Board:\n- Aggregates multi-channel crisis reports including voice notes, SMS, flood photos, and handwritten notes\n- Deduplicates incoming reports, resolves vague geographic mentions to map coordinates, and ranks severity\n- Delivers an operational dashboard linking every prioritized incident directly to raw evidence trails"
+  },
+  {
+    "row": 44,
+    "sno": 43.0,
+    "product": "Saaras, Bulbul, Sarvam-105B",
+    "idea": "Offline-First Citizen Reporter:\n- Enables emergency reporting via missed calls and SMS in low-bandwidth or network-dead zones\n- Queues reports locally and synchronizes automatically with emergency fusion boards upon reconnection\n- Triggers automated voice and text safety advisories in callers' regional languages"
+  },
+  {
+    "row": 45,
+    "sno": 44.0,
+    "product": "Sarvam-105B",
+    "idea": "Needs-to-Relief Matcher:\n- Extracts critical relief requirements from structured incoming disaster incident reports\n- Matches real-time community needs against available emergency relief supplies and warehouse inventories\n- Formulates prioritized dispatch recommendations and logistics routing for first responders"
+  },
+  {
+    "row": 46,
+    "sno": 45.0,
+    "product": "Sarvam Vision, Bulbul, Saaras, Sarvam-105B",
+    "idea": "Sarkari Sahayak (Scheme Journey Agent):\n- Conversational agent identifying eligible government welfare schemes through official RAG retrieval\n- Explains eligibility criteria, parses applicant KYC documents (Sarvam Vision), and highlights missing items\n- Guides citizens step-by-step through form completion with spoken field confirmation via Bulbul"
+  },
+  {
+    "row": 47,
+    "sno": 46.0,
+    "product": "Saaras, Sarvam-105B",
+    "idea": "Grievance Drafter:\n- Converts unstructured citizen voice complaints into well-structured, cited administrative grievances\n- Formats complaints to match CPGRAMS standards with clear problem statements and relevant department tags\n- Enables citizen tracking and updates across resolution lifecycles"
+  },
+  {
+    "row": 48,
+    "sno": 47.0,
+    "product": "Sarvam Vision, Sarvam-105B",
+    "idea": "RTI Copilot:\n- Assists citizens in framing formal Right to Information (RTI) applications through guided dialogue\n- Grounds all requests in uploaded government records, public notices, and official documentation\n- Generates legally compliant RTI draft applications ready for submission in regional languages"
+  },
+  {
+    "row": 49,
+    "sno": 48.0,
+    "product": "Saaras, Sarvam Vision, Sarvam-105B",
+    "idea": "OSINT Fusion Workbench:\n- Ingests multilingual intelligence inputs including news articles, police reports, and intercepted radio audio\n- Extracts entities and constructs cross-lingual knowledge graphs linking actors, events, and locations\n- Highlights weak-signal patterns with confidence scoring and preserves analyst verification controls"
+  },
+  {
+    "row": 50,
+    "sno": 49.0,
+    "product": "Sarvam-105B, Sarvam Translate",
+    "idea": "Cross-Lingual Misinformation Triage:\n- Traces the spread of viral claims across multilingual social posts, messaging channels, and news media\n- Evaluates factual claims against verified evidence repositories with explainable source citations\n- Assigns objective consistency scores supported by side-by-side multilingual excerpts"
+  },
+  {
+    "row": 51,
+    "sno": 50.0,
+    "product": "Sarvam Vision",
+    "idea": "Incident-Report Digitiser with Integrity Checks:\n- Transforms unstructured, multilingual physical incident reports into structured digital events\n- Generates cryptographic verification hashes and auditable links to original scanned reports\n- Ensures evidence chains remain tamper-proof throughout aggregation into broader intelligence pictures"
+  }
+]

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aawaz (आवाज़) — Spoken Math Misconception Detector</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen">
+
+  <!-- Top Navigation Header -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="brand">
+        <div class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            <line x1="12" x2="12" y1="19" y2="22"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">Aawaz <span class="hindi-text font-normal text-amber-400">आवाज़</span></span>
+          <span class="brand-subtitle">Spoken Misconception Detector</span>
+        </div>
+      </div>
+
+      <div class="nav-badges">
+        <div class="badge sarvam-badge">
+          <span class="pulse-dot"></span>
+          <span>Powered by Sarvam Sovereign AI</span>
+        </div>
+        <div class="lang-selector">
+          <label for="languageSelect">Language:</label>
+          <select id="languageSelect">
+            <option value="hi-IN" selected>हिन्दी (Hindi)</option>
+            <option value="bn-IN">বাংলা (Bengali)</option>
+            <option value="en-IN">English (Indian)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Hero & Problem Selector -->
+  <main class="main-content">
+    
+    <!-- Problem Selection Tabs -->
+    <section class="task-tabs-section">
+      <div class="task-tabs-header">
+        <span class="section-tag">CHOOSE MATH CHALLENGE</span>
+        <h2 class="section-title">Foundational Fraction Diagnosis</h2>
+      </div>
+      <div class="tabs-container" id="problemTabs">
+        <!-- Rendered dynamically via JavaScript -->
+      </div>
+    </section>
+
+    <!-- Problem Showcase Card -->
+    <section class="problem-card" id="problemCard">
+      <div class="problem-display">
+        <div class="math-banner">
+          <span class="math-expr" id="problemExpression">1/2 + 1/3</span>
+        </div>
+        <div class="problem-info">
+          <h3 id="problemTitle">Fraction Addition: 1/2 + 1/3</h3>
+          <p id="problemPrompt">A student solves this problem and explains their thinking aloud. Listen to their reasoning, diagnose underlying cognitive misconceptions, and repair the concept.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Two-Column Interactive Workspace -->
+    <div class="workspace-grid">
+
+      <!-- Left Column: Voice Studio & Transcripts -->
+      <div class="workspace-col voice-studio">
+        
+        <div class="card card-voice">
+          <div class="card-header">
+            <div class="card-title-group">
+              <span class="step-num">Step 1</span>
+              <h3>Student Spoken Reasoning</h3>
+            </div>
+            <span class="tech-pill">Saaras:v4 STT</span>
+          </div>
+
+          <!-- Live Recording Section -->
+          <div class="recording-box">
+            <div class="mic-wrapper">
+              <button id="micBtn" class="mic-button" title="Click to Record Voice">
+                <svg id="micIcon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+                  <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                  <line x1="12" x2="12" y1="19" y2="22"/>
+                </svg>
+                <div class="mic-waves"></div>
+              </button>
+            </div>
+            <div class="recording-status">
+              <span id="recordingStatusText">Click microphone to speak explanation</span>
+              <span id="recordingTimer" class="timer-badge hidden">00:00</span>
+            </div>
+            <canvas id="waveformCanvas" width="400" height="40" class="waveform-canvas hidden"></canvas>
+          </div>
+
+          <!-- Stage Fallback Demo Presets -->
+          <div class="demo-presets-box">
+            <div class="presets-header">
+              <span class="presets-label">⚡ Live Stage Demo Presets (Instant):</span>
+            </div>
+            <div class="preset-buttons" id="presetButtons">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+
+          <!-- Transcript Editor -->
+          <div class="transcript-box">
+            <div class="transcript-header">
+              <label for="transcriptInput">Spoken Transcript (Editable):</label>
+              <button id="clearTranscriptBtn" class="btn-text">Clear</button>
+            </div>
+            <textarea id="transcriptInput" rows="3" placeholder="Transcription will appear here, or type/edit directly..."></textarea>
+            
+            <button id="diagnoseBtn" class="btn-primary" disabled>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="8" x2="12" y2="12"/>
+                <line x1="12" y1="16" x2="12.01" y2="16"/>
+              </svg>
+              <span>Diagnose Reasoning with Sarvam-105B</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Column: Diagnosis, Visual Strips & Repair -->
+      <div class="workspace-col diagnosis-column">
+        
+        <!-- Empty Placeholder state -->
+        <div id="emptyState" class="empty-state card">
+          <div class="empty-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+              <polyline points="2 17 12 22 22 17"/>
+              <polyline points="2 12 12 17 22 12"/>
+            </svg>
+          </div>
+          <h3>Awaiting Spoken Input</h3>
+          <p>Record a student explaining their fraction steps or click one of the live demo presets on the left to see Sarvam AI diagnose cognitive misconceptions in real time.</p>
+        </div>
+
+        <!-- Active Diagnosis Card -->
+        <div id="diagnosisCard" class="card diagnosis-card hidden">
+          <div class="card-header">
+            <div class="card-title-group">
+              <span class="step-num">Step 2</span>
+              <h3>Cognitive Diagnosis</h3>
+            </div>
+            <span class="tech-pill">Sarvam-105B</span>
+          </div>
+
+          <!-- Rubric Badge -->
+          <div class="rubric-badge-container">
+            <div id="rubricBadge" class="rubric-badge">
+              <!-- Injected dynamically -->
+            </div>
+          </div>
+
+          <!-- Exact Quote Callout -->
+          <div class="quote-callout" id="quoteCallout">
+            <div class="quote-header">
+              <span class="quote-icon">❝</span>
+              <span>Identified Flawed Reasoning:</span>
+            </div>
+            <p class="quote-text" id="quoteText">"2 aur 3 ko add kiya to 5 mila"</p>
+          </div>
+
+          <p class="diagnosis-summary" id="diagnosisSummary"></p>
+
+          <!-- Interactive SVG Fraction Strips -->
+          <div class="visualizer-section">
+            <div class="visualizer-header">
+              <h4>Visual Mathematical Proof</h4>
+              <span id="visualHint" class="visual-hint"></span>
+            </div>
+            <div id="fractionVisualContainer" class="fraction-visual-container">
+              <!-- SVG dynamically rendered -->
+            </div>
+          </div>
+
+          <!-- Bulbul Spoken Repair Player -->
+          <div class="spoken-repair-box">
+            <div class="repair-header">
+              <div class="speaker-info">
+                <div class="avatar-ring">🎙️</div>
+                <div>
+                  <strong>Guru Shubh (Bulbul:v3)</strong>
+                  <span class="subtext">Targeted Spoken Pedagogical Repair</span>
+                </div>
+              </div>
+              <button id="playAudioBtn" class="btn-play-audio">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="5 3 19 12 5 21 5 3"/>
+                </svg>
+                <span>Listen Repair</span>
+              </button>
+            </div>
+            <p id="spokenRepairText" class="spoken-repair-text"></p>
+          </div>
+
+          <!-- Step 3: Transfer Retest Question -->
+          <div class="transfer-box" id="transferBox">
+            <div class="transfer-header">
+              <div class="transfer-title-group">
+                <span class="step-num success">Step 3</span>
+                <h4>Check Transfer Problem</h4>
+              </div>
+              <span class="subtext">Verify repaired mental model</span>
+            </div>
+            
+            <p id="transferPromptText" class="transfer-prompt"></p>
+            
+            <div id="transferInputContainer" class="transfer-inputs">
+              <!-- Inputs generated based on task type -->
+            </div>
+
+            <div id="transferFeedback" class="transfer-feedback hidden"></div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Sarvam Architecture & Impact Footer Banner -->
+    <section class="sarvam-stack-banner">
+      <div class="stack-card">
+        <div class="stack-icon">🇮🇳</div>
+        <div>
+          <h4>Saaras:v4 (Speech-to-Text)</h4>
+          <p>Native Indic & code-mixed Hinglish recognition with mathematical vocabulary preservation.</p>
+        </div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-icon">🧠</div>
+        <div>
+          <h4>Sarvam-105B (Cognitive Reasoner)</h4>
+          <p>Sovereign Indic LLM diagnosing cognitive misconceptions and grounding exact verbal evidence.</p>
+        </div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-icon">🔊</div>
+        <div>
+          <h4>Bulbul:v3 (Expressive TTS)</h4>
+          <p>Warm, encouraging multilingual voice synthesis delivering personalized pedagogical repair.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Audio playback element -->
+  <audio id="audioPlayer" class="hidden"></audio>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
